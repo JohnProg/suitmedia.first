@@ -5,23 +5,25 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import android.view.Menu
+import android.view.MenuItem
 import dev.alfianh.firsttestsuitmedia.R
-import dev.alfianh.firsttestsuitmedia.adapters.EventAdapter
-import dev.alfianh.firsttestsuitmedia.models.Event
 import kotlinx.android.synthetic.main.activity_event.*
+import dev.alfianh.firsttestsuitmedia.fragments.EventFragment
+import dev.alfianh.firsttestsuitmedia.fragments.MapFragment
+
 
 /**
  * Created by alfianh on 8/9/17.
  */
-class EventActivity : AppCompatActivity(), EventAdapter.Listener {
+class EventActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_event)
-        rvContent.layoutManager = LinearLayoutManager(this)
-        rvContent.hasFixedSize()
-        rvContent.adapter = EventAdapter(this, getLists(), this)
+        initToolBar()
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.eventContent, EventFragment()).commit()
     }
 
     companion object {
@@ -30,19 +32,26 @@ class EventActivity : AppCompatActivity(), EventAdapter.Listener {
         }
     }
 
-    fun getLists(): ArrayList<Event> {
-        var lists = ArrayList<Event>()
-        lists.add(Event("Pagelaran Seni", R.drawable.suitmedia))
-        lists.add(Event("Seminar Android", R.drawable.suitmedia))
-        lists.add(Event("Seminar iOS", R.drawable.suitmedia))
-        lists.add(Event("Bandung Developer Day", R.drawable.suitmedia))
-        return lists;
+    fun initToolBar() {
+        setSupportActionBar(toolbar)
+        toolbar.setNavigationIcon(R.drawable.btn_back_article_selected)
+        toolbar.setNavigationOnClickListener { v -> finish() }
     }
 
-    override fun onClick(event: Event) {
-        var resultIntent = Intent();
-        resultIntent.putExtra("event", event.name)
-        setResult(MenuActivity.EVENT_RESULT_CODE, resultIntent);
-        finish();
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_new_media -> {
+                val transaction = supportFragmentManager.beginTransaction()
+                transaction.replace(R.id.eventContent, MapFragment()).commit()
+                return true
+            }
+        }
+        return false
     }
 }

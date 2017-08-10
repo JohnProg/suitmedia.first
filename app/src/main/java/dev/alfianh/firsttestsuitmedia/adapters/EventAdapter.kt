@@ -36,6 +36,7 @@ class EventAdapter(
         fun bindView(data: Event) {
             itemView.ivPhoto.setImageResource(data.image)
             itemView.tvName.text = data.name
+            itemView.tvDesc.text = data.desc
         }
     }
 

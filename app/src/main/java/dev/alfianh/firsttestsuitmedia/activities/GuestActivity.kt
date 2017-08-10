@@ -5,6 +5,7 @@ import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_guest.*
 /**
  * Created by alfianh on 8/9/17.
  */
-class GuestActivity : AppCompatActivity(), GuestPresenter.GuestView, GuestAdapter.Listener {
+class GuestActivity : AppCompatActivity(), GuestPresenter.GuestView, GuestAdapter.Listener, SwipeRefreshLayout.OnRefreshListener {
 
     var adapter: GuestAdapter? = null
     var dialog: ProgressDialog? = null
@@ -33,6 +34,7 @@ class GuestActivity : AppCompatActivity(), GuestPresenter.GuestView, GuestAdapte
         rvContent.adapter = adapter
         dialog = ProgressDialog(this)
         dialog?.setMessage("Loading...")
+        swipe.setOnRefreshListener(this)
         getPeople()
     }
 
@@ -57,11 +59,11 @@ class GuestActivity : AppCompatActivity(), GuestPresenter.GuestView, GuestAdapte
     }
 
     override fun onShowLoading() {
-        dialog?.show()
+        swipe.isRefreshing = true
     }
 
     override fun onDismissLoading() {
-        dialog?.dismiss()
+        swipe.isRefreshing = false
     }
 
     override fun onFailed(message: String) {
@@ -75,5 +77,9 @@ class GuestActivity : AppCompatActivity(), GuestPresenter.GuestView, GuestAdapte
             Toast.makeText(this, guest.name, Toast.LENGTH_SHORT)
         }
         adapter!!.notifyDataSetChanged()
+    }
+
+    override fun onRefresh() {
+        getPeople()
     }
 }

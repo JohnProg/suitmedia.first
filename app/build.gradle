@@ -42,6 +42,8 @@ dependencies {
     compile "com.squareup.retrofit2:converter-gson:$retrofit"
     compile "com.squareup.okhttp3:logging-interceptor:$okHttp"
     compile "com.squareup.okhttp3:okhttp:$okHttp"
+    compile 'com.google.android.gms:play-services-maps:9.6.1'
+    compile 'com.google.android.gms:play-services-location:9.6.1'
 }
 repositories {
     mavenCentral()

@@ -1,9 +1,12 @@
 package dev.alfianh.firsttestsuitmedia.activities
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.annotation.IntegerRes
 import android.support.v7.app.AppCompatActivity
+import android.widget.ActionMenuView
 import android.widget.Toast
 import dev.alfianh.firsttestsuitmedia.R
 import kotlinx.android.synthetic.main.activity_menu.*
@@ -40,6 +43,7 @@ class MenuActivity : AppCompatActivity() {
                     btnGuest.text = data?.getStringExtra("guest")
                     val birthdate = data?.getStringExtra("birthdate")
                     val day: Int = Integer.parseInt(birthdate!!.split("-")[2])
+                    val month: Int = Integer.parseInt(birthdate!!.split("-")[1])
                     if (day % 2 == 0 && day % 3 == 0) {
                         Toast.makeText(this, "iOS", Toast.LENGTH_SHORT).show()
                     } else if (day % 2 == 0) {
@@ -49,8 +53,17 @@ class MenuActivity : AppCompatActivity() {
                     } else {
                         Toast.makeText(this, "feature phone", Toast.LENGTH_SHORT).show()
                     }
+                    Toast.makeText(this, isPrime(month), Toast.LENGTH_SHORT).show()
                 }
             }
         }
+    }
+
+    fun isPrime(n: Int): String {
+        for (i in 2..n - 1) {
+            if (n % i == 0)
+                return "not prime"
+        }
+        return "isPrime"
     }
 }
